@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Resizer</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <h1>Upload Image</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="image" required><br>
+        <label for="scale">Scale (e.g., 1.5):</label>
+        <input type="text" name="scale" required><br>
+
+        <!-- reCAPTCHA Widget -->
+        <div class="g-recaptcha" data-sitekey="6LfD_2cqAAAAAHhEdlBNdw3tK-Ycbqx_o3On52fy"></div>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
