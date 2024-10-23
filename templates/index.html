@@ -7,15 +7,11 @@
 </head>
 <body>
     <h1>Upload Image</h1>
-    <form method="POST" action="/upload" enctype="multipart/form-data">
-        <input type="file" name="image" required><br>
-        <label for="scale">Scale (e.g., 1.5):</label>
-        <input type="text" name="scale" required><br>
-
-        <!-- reCAPTCHA Widget -->
+    < action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <input type="text" name="scale" placeholder="Scale (default 1.0)">
         <div class="g-recaptcha" data-sitekey="6LfD_2cqAAAAAHhEdlBNdw3tK-Ycbqx_o3On52fy"></div>
-
-        <button type="submit">Submit</button>
+        <button type="submit">Загрузить</button>
     </form>
 </body>
 </html>
