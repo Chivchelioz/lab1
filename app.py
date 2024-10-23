@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from PIL import Image
-import matplotlib.pyplot as plt
+import matplotlib.pyplot
 matplotlib.use('Agg')
 import numpy as np
 import os
