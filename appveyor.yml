@@ -6,11 +6,6 @@ environment:
   PYTHON: "C:\\Python39"
   PYTHON_VERSION: "3.9.7"
 
-# Команды перед установкой зависимостей
-before_install:
-  - python --version
-  - pip install --upgrade pip
-
 # Установка зависимостей (библиотек) из requirements.txt
 install:
   - pip install -r requirements.txt
