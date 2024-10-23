@@ -1,11 +1,11 @@
 # Версия операционной системы Windows
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 # Версия Python
 environment:
   matrix:
-    - PYTHON: "C:\\Python39"
-      PYTHON_VERSION: "3.9"
+    - PYTHON: "C:\\Python311"
+      PYTHON_VERSION: "3.11"
 
 # Установка зависимостей (библиотек) из requirements.txt
 install:
@@ -13,10 +13,8 @@ install:
   - python --version
   - python -m pip install --upgrade pip --disable-pip-version-check
   - pip install --upgrade setuptools wheel
-  - pip install numpy<2.0
   - pip install --prefer-binary -r requirements.txt
 
 # Команды для запуска приложения
 build_script:
   - python app.py
-
