@@ -1,0 +1,31 @@
+# Версия операционной системы Windows
+image: Visual Studio 2019
+
+# Версия Python
+environment:
+  PYTHON: "C:\\Python39"
+  PYTHON_VERSION: "3.9.7"
+
+# Скачивание и установка Python, если не установлен
+install:
+  - ps: Install-Product python $env:PYTHON_VERSION x64
+
+# Команды перед установкой зависимостей
+before_install:
+  - python --version
+  - pip install --upgrade pip
+
+# Установка зависимостей (библиотек) из requirements.txt
+install:
+  - pip install -r requirements.txt
+
+# Команды для запуска приложения
+build_script:
+  - python app.py  # Запуск приложения
+
+
+# deploy:
+#   provider: heroku
+#   app: your-heroku-app-name
+#   api_key:
+#     secure: your-encrypted-heroku-api-key
