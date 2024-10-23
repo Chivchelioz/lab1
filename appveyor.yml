@@ -3,14 +3,15 @@ image: Visual Studio 2019
 
 # Версия Python
 environment:
-  PYTHON: "C:\\Python310"
-  PYTHON_VERSION: "3.10.9"
+  matrix:
+    - PYTHON: "C:\\Python39"
+      PYTHON_VERSION: "3.9"
 
 # Установка зависимостей (библиотек) из requirements.txt
 install:
   - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
   - python --version
-  - python -m pip install --upgrade pip
+  - python -m pip install --upgrade pip --disable-pip-version-check
   - ps: Install-Product python $env:PYTHON_VERSION x64
   - pip install --upgrade setuptools wheel
   - pip install --prefer-binary -r requirements.txt
