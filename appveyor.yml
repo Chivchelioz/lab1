@@ -13,6 +13,7 @@ install:
   - python --version
   - python -m pip install --upgrade pip --disable-pip-version-check
   - pip install --upgrade setuptools wheel
+  - pip install numpy<2.0
   - pip install --prefer-binary -r requirements.txt
 
 # Команды для запуска приложения
