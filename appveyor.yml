@@ -20,9 +20,3 @@ install:
 build_script:
   - python app.py
 
-
-# deploy:
-#   provider: heroku
-#   app: your-heroku-app-name
-#   api_key:
-#     secure: your-encrypted-heroku-api-key
