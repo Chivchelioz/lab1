@@ -12,7 +12,6 @@ install:
   - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
   - python --version
   - python -m pip install --upgrade pip --disable-pip-version-check
-  - ps: Install-Product python $env:PYTHON_VERSION x64
   - pip install --upgrade setuptools wheel
   - pip install --prefer-binary -r requirements.txt
 
