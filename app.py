@@ -5,7 +5,7 @@ import os
 import requests
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = './static/uploads/'
+app.config['UPLOAD_FOLDER'] = 'lab1/static/uploads/'
 
 # Главная страница
 @app.route('/')
@@ -75,13 +75,15 @@ def save_image(image_file):
 def resize_image(image_path, scale, filename):
     img = Image.open(image_path)
     new_size = (int(img.size[0] * scale), int(img.size[1] * scale))
-    resized_img = img.resize(new_size)
+    # Используем Image.LANCZOS вместо Image.ANTIALIAS
+    resized_img = img.resize(new_size, Image.LANCZOS)
 
     resized_path = os.path.join(app.config['UPLOAD_FOLDER'], f'resized_{filename}')
     resized_img.save(resized_path)
     return resized_path
 
-# Построение графиков распределения цветов (новая версия без matplotlib)
+
+# Построение графиков распределения цветов
 def plot_color_distribution(image_path, name):
     img = Image.open(image_path)
     arr = np.array(img)
@@ -96,7 +98,7 @@ def plot_color_distribution(image_path, name):
     # Нормализация и создание гистограммы
     colors = ('r', 'g', 'b')
     for i, color in enumerate(colors):
-        histogram = np.histogram(arr[:, :, i].ravel(), bins=256, range=(0, 256))[0]
+        histogram = np.histogram(arr[:, :, i], bins=256, range=(0, 256))[0]
         max_count = max(histogram)
         normalized_histogram = (histogram / max_count) * 300  # Нормализуем до высоты 300 пикселей
 
@@ -105,7 +107,7 @@ def plot_color_distribution(image_path, name):
             draw.line([(x * 3 + i * 3, 400), (x * 3 + i * 3, 400 - count)], fill=color_map[color])
 
     # Сохранение изображения гистограммы
-    histogram_img.save(f'./static/{name}_color_distribution.png')
+    histogram_img.save(f'lab1/static/{name}_color_distribution.png')
 
 
 if __name__ == '__main__':
