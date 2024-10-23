@@ -6,10 +6,6 @@ environment:
   PYTHON: "C:\\Python39"
   PYTHON_VERSION: "3.9.7"
 
-# Скачивание и установка Python, если не установлен
-install:
-  - ps: Install-Product python $env:PYTHON_VERSION x64
-
 # Команды перед установкой зависимостей
 before_install:
   - python --version
