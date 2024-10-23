@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from PIL import Image
+from flasgger import Swagger, swag_from
 import matplotlib.pyplot as plt
 import numpy as np
 import os
 import requests
-from flasgger import Swagger, swag_from
+ 
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './static/uploads/'
