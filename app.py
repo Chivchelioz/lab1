@@ -1,12 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from PIL import Image
-import matplotlib.pyplot
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+from flask import Flask, render_template, request, redirect, url_for
+from PIL import Image, ImageDraw
 import numpy as np
 import os
 import requests
- 
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './static/uploads/'
@@ -18,18 +14,22 @@ def index():
 
 # Обработка загрузки изображения и проверки капчи
 @app.route('/upload', methods=['POST'])
-
 def upload_image():
     # Проверка капчи
     recaptcha_response = request.form.get('g-recaptcha-response')
-    if not verify_recaptcha(recaptcha_response):
+    if not recaptcha_response or not verify_recaptcha(recaptcha_response):
         return 'Captcha verification failed, please try again.', 400
 
     # Получаем данные формы
-    scale = float(request.form.get('scale', 1.0))  # Получаем масштаб
-    image_file = request.files['image']
+    scale = request.form.get('scale')
+    try:
+        scale = float(scale) if scale else 1.0  # Получаем масштаб
+    except ValueError:
+        return 'Invalid scale value.', 400
 
-    if image_file:
+    image_file = request.files.get('image')
+    
+    if image_file and image_file.filename != '':
         # Сохранение оригинального изображения
         image_path = save_image(image_file)
         
@@ -40,26 +40,33 @@ def upload_image():
         plot_color_distribution(image_path, 'original')
         plot_color_distribution(resized_image_path, 'resized')
 
-        return render_template('result.html', 
-                               original_image=image_file.filename, 
-                               resized_image=f'resized_{image_file.filename}')
+        return render_template(
+            'result.html', 
+            original_image=image_file.filename, 
+            resized_image=f'resized_{image_file.filename}'
+        )
     return redirect(url_for('index'))
 
 # Проверка капчи через Google reCAPTCHA API
 def verify_recaptcha(recaptcha_response):
-   
     secret_key = '6LfD_2cqAAAAAMLqRsP-wGcIELbHKX0Tt10QJUme'
     verify_url = 'https://www.google.com/recaptcha/api/siteverify'
     data = {
         'secret': secret_key,
         'response': recaptcha_response
     }
-    r = requests.post(verify_url, data=data)
-    result = r.json()
-    return result.get('success', False)
+    try:
+        r = requests.post(verify_url, data=data)
+        result = r.json()
+        return result.get('success', False)
+    except requests.RequestException:
+        return False
 
 # Сохранение изображения на сервере
 def save_image(image_file):
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])
+        
     image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file.filename)
     image_file.save(image_path)
     return image_path
@@ -74,21 +81,32 @@ def resize_image(image_path, scale, filename):
     resized_img.save(resized_path)
     return resized_path
 
-# Построение графиков распределения цветов
+# Построение графиков распределения цветов (новая версия без matplotlib)
 def plot_color_distribution(image_path, name):
     img = Image.open(image_path)
     arr = np.array(img)
+
+    # Создание пустого изображения для гистограммы
+    histogram_img = Image.new('RGB', (800, 400), (255, 255, 255))
+    draw = ImageDraw.Draw(histogram_img)
+
+    # Цветовая карта для отображения цветов гистограммы
+    color_map = {'r': (255, 0, 0), 'g': (0, 255, 0), 'b': (0, 0, 255)}
+
+    # Нормализация и создание гистограммы
     colors = ('r', 'g', 'b')
-
-    plt.figure(figsize=(10, 5))
     for i, color in enumerate(colors):
-        plt.hist(arr[:, :, i].ravel(), bins=256, color=color, alpha=0.5)
+        histogram = np.histogram(arr[:, :, i].ravel(), bins=256, range=(0, 256))[0]
+        max_count = max(histogram)
+        normalized_histogram = (histogram / max_count) * 300  # Нормализуем до высоты 300 пикселей
 
-    plt.title(f'Color distribution - {name}')
-    plt.xlabel('Pixel Value')
-    plt.ylabel('Frequency')
-    plt.savefig(f'./static/{name}_color_distribution.png')
-    plt.close()
+        # Рисуем гистограмму
+        for x, count in enumerate(normalized_histogram):
+            draw.line([(x * 3 + i * 3, 400), (x * 3 + i * 3, 400 - count)], fill=color_map[color])
+
+    # Сохранение изображения гистограммы
+    histogram_img.save(f'./static/{name}_color_distribution.png')
+
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
