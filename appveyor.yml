@@ -1,4 +1,4 @@
-# Версия операционной системы Windows
+# Среда сборки
 image: Visual Studio 2022
 
 # Версия Python

@@ -3,33 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Result</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        img {
-            max-width: 600px;
-            margin: 10px 0;
-        }
-    </style>
 </head>
 <body>
     <h1>Image Resized</h1>
-
     <h2>Original Image:</h2>
-    <!-- Оригинальное изображение -->
-    <img src="{{ url_for('static', filename='uploads/' + original_image) }}" alt="Original Image"><br>
-    <!-- График распределения цветов для оригинального изображения -->
-    <img src="{{ url_for('static', filename='original_color_distribution.png') }}" alt="Original Color Distribution">
-
+    <img src="/static/uploads/{{ original_image }}" alt="Original Image"><br> <!--Отображение оригинального изображения-->
+    <img src="/static/original_color_distribution.png" alt="Original Color Distribution"> <!--Отображение гистограммы оригинального изображения-->
+    
     <h2>Resized Image:</h2>
-    <!-- Масштабированное изображение -->
-    <img src="{{ url_for('static', filename='uploads/' + resized_image) }}" alt="Resized Image"><br>
-    <!-- График распределения цветов для масштабированного изображения -->
-    <img src="{{ url_for('static', filename='resized_color_distribution.png') }}" alt="Resized Color Distribution">
+    <img src="/static/uploads/{{ resized_image }}" alt="Resized Image"><br> <!--Отображение масштабируемого изображения-->
+    <img src="/static/resized_color_distribution.png" alt="Resized Color Distribution"> <!--Отображение гистограммы масштабируемого изображения-->
 </body>
 </html>

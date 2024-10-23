@@ -7,12 +7,12 @@
 </head>
 <body>
     <h1>Upload Image</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="image" required>
-        <div></div>
-        <input type="text" name="scale" placeholder="Scale (default 1.0)">
-        <div class="g-recaptcha" data-sitekey="6LfD_2cqAAAAAHhEdlBNdw3tK-Ycbqx_o3On52fy"></div>
-        <button type="submit">Загрузить</button>
+    <form action="/upload" method="POST" enctype="multipart/form-data"> 
+        <input type="file" name="image" required> <!--Кнопка загрузки изображения-->
+        <div></div> <!--Блок для переноса строки-->
+        <input type="text" name="scale" placeholder="Scale (default 1.0)"> <!--Поля ввода модификатора масштабирования-->
+        <div class="g-recaptcha" data-sitekey="6LfD_2cqAAAAAHhEdlBNdw3tK-Ycbqx_o3On52fy"></div> <!--Блок капчи-->
+        <button type="submit">Загрузить</button> <!--Кнопка подтверждения загрузки изображения-->
     </form>
 </body>
 </html>

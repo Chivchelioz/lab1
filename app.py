@@ -1,11 +1,12 @@
+# Импорт требуемых библиотек
 from flask import Flask, render_template, request, redirect, url_for
 from PIL import Image, ImageDraw
 import numpy as np
 import os
 import requests
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'lab1/static/uploads/'
+app = Flask(__name__) # Создание Flask приложения
+app.config['UPLOAD_FOLDER'] = 'lab1/static/uploads/' # Путь для сохранения загруженных изображений
 
 # Главная страница
 @app.route('/')
@@ -75,7 +76,7 @@ def save_image(image_file):
 def resize_image(image_path, scale, filename):
     img = Image.open(image_path)
     new_size = (int(img.size[0] * scale), int(img.size[1] * scale))
-    # Используем Image.LANCZOS вместо Image.ANTIALIAS
+
     resized_img = img.resize(new_size, Image.LANCZOS)
 
     resized_path = os.path.join(app.config['UPLOAD_FOLDER'], f'resized_{filename}')
@@ -112,5 +113,5 @@ def plot_color_distribution(image_path, name):
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
-        os.makedirs(app.config['UPLOAD_FOLDER'])
-    app.run(debug=True)
+        os.makedirs(app.config['UPLOAD_FOLDER']) #Создание папки ./static/uploads если её не существует
+    app.run(debug=True) # Включение дебага для отладки возможных ошибок
